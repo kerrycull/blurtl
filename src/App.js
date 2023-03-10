@@ -1,23 +1,20 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import LatestArticles from "./components/LatestArticles";
+import "./App.css";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="header">
+        <h2>Blurtl</h2>
+        <h5>Realtime cryptocurrency news.</h5>
+      </div>
+      <div className="navigation">
+        <h3>Latest</h3>
+        <h3>Top (coming soon)</h3>
+        <h3>Rising (coming soon)</h3>
+      </div>
+      <LatestArticles />
     </div>
   );
 }
