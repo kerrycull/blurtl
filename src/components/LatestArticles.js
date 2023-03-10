@@ -7,7 +7,7 @@ function LatestArticles() {
 
   useEffect(() => {
     const articleGrabber = () => {
-      fetch("/api/posts?per_page=10")
+      fetch("https://cryptopotato.com/wp-json/wp/v2/posts/?per_page=10")
         .then((response) => response.json())
         .then((data) => {
           setPosts(data);
