@@ -104,7 +104,7 @@ function LatestArticles() {
         });
       }
     });
-  }, [newPosts]);
+  }, [newPosts, addPost, posts]);
 
   return (
     <div className="article-container">
