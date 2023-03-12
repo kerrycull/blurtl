@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "../Article.css";
+import { doc, updateDoc, getDoc } from "firebase/firestore";
+import { db } from "../firebase";
 
 function Article({ post }) {
   const length = 200;
@@ -23,20 +25,48 @@ function Article({ post }) {
 
   const excerpt7 = shortenString(excerpt6, length);
 
+  const [upvotes, setUpvotes] = useState(post.upvotes || 0);
+  const [downvotes, setDownvotes] = useState(post.downvotes || 0);
+
+  const handleUpvote = async () => {
+    //console.log(post.docId); // Check if post is defined
+    const newUpvotes = upvotes + 1;
+    setUpvotes(newUpvotes);
+    const docRef = doc(db, `posts/${post.docId}`);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      await updateDoc(docRef, { upvotes: newUpvotes });
+    } else {
+      console.log("Document does not exist");
+    }
+  };
+
+  const handleDownvote = async () => {
+    //console.log(post); // Check if post is defined
+    const newDownvotes = downvotes + 1;
+    setDownvotes(newDownvotes);
+    const docRef = doc(db, `posts/${post.docId}`);
+    await updateDoc(docRef, { downvotes: newDownvotes });
+  };
+
+  const score = upvotes - downvotes;
+
   return (
-    <div className="article">
-      <h3 className="title">{title}</h3>
-      <p className="excerpt">{excerpt7}</p>
-      <a href={post.link} className="link">
-        Full article
-      </a>
+    <div className="articleBox">
+      <div className="article">
+        <h3 className="title">{title}</h3>
+        <p className="excerpt">{excerpt7}</p>
+        <a href={post.link} className="link">
+          Full article
+        </a>
+      </div>
+      <div className="score-container">
+        <button onClick={handleUpvote}>Upvote</button>
+        <span className="score">{score}</span>
+        <button onClick={handleDownvote}>Downvote</button>
+      </div>
     </div>
   );
 }
 
 export default Article;
-
-//      <p className="excerpt">{excerpt7}</p>
-//<a className="link" href={post.link}>
-//Full article
-//</a>
