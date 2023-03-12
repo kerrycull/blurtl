@@ -55,7 +55,7 @@ function LatestArticles() {
         console.error("Error adding document: ", e);
       }
     },
-    [posts, db]
+    [posts]
   );
 
   const articleGrabber = () => {
@@ -107,7 +107,7 @@ function LatestArticles() {
         });
       }
     });
-  }, [newPosts]);
+  }, [newPosts, posts, addPost]);
 
   return (
     <div className="article-container">
