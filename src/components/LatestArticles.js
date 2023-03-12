@@ -23,18 +23,6 @@ function LatestArticles() {
       //console.log("postId is undefined");
       return;
     }
-    if (thePost.upvotes && thePost.downvotes === undefined) {
-      const docRef = await addDoc(collection(db, "posts"), {
-        id: thePost.id,
-        title: thePost.title,
-        excerpt: thePost.excerpt,
-        link: thePost.link,
-        upvotes: 0,
-        downvotes: 0,
-        docId: null,
-      });
-      return;
-    }
     if (thePost.upvotes || thePost.downvotes >= 0) {
       const docRef = await addDoc(collection(db, "posts"), {
         id: thePost.id,
@@ -45,6 +33,8 @@ function LatestArticles() {
         downvotes: thePost.downvotes,
         docId: null,
       });
+      const docRef2 = doc(db, `posts/${docRef.id}`);
+      await updateDoc(docRef2, { docId: docRef.id });
       return;
     }
     try {
@@ -54,6 +44,8 @@ function LatestArticles() {
         excerpt: thePost.excerpt,
         link: thePost.link,
         docId: null,
+        upvotes: thePost.upvotes,
+        downvotes: thePost.downvotes,
       });
       const docRef2 = doc(db, `posts/${docRef.id}`);
       await updateDoc(docRef2, { docId: docRef.id });
@@ -66,7 +58,7 @@ function LatestArticles() {
   const articleGrabber = () => {
     console.log("fetching articles");
     fetch(
-      "https://cryptonews-api.com/api/v1/category?section=general&items=50&extra-fields=id&page=1&token=5ouww0nypihcbvkubvklapfqvqwh4d3ibeniydyv"
+      "https://cryptonews-api.com/api/v1/category?section=general&items=5&extra-fields=id&page=1&token=5ouww0nypihcbvkubvklapfqvqwh4d3ibeniydyv"
     )
       .then((response) => response.json())
       .then((data) => {
@@ -107,8 +99,8 @@ function LatestArticles() {
           title: post.title,
           excerpt: post.text,
           link: post.news_url,
-          upvotes: post.upvotes,
-          downvotes: post.downvotes,
+          upvotes: 0,
+          downvotes: 0,
         });
       }
     });
