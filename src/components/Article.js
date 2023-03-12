@@ -1,12 +1,12 @@
 import React from "react";
 import "../Article.css";
 
-function Article(post) {
+function Article({ post }) {
   const length = 200;
 
-  const title = post.post.title.rendered.replaceAll("&#8217;", "'");
+  const title = post.title.replaceAll("&#8217;", "'");
 
-  const excerpt = post.post.excerpt.rendered.replaceAll("<p>", "");
+  const excerpt = post.excerpt.replaceAll("<p>", "");
   const excerpt2 = excerpt.replaceAll("</p>", "");
   const excerpt3 = excerpt2.replaceAll("&#8216;", "'");
   const excerpt4 = excerpt3.replaceAll("&#8217;", "'");
@@ -27,7 +27,7 @@ function Article(post) {
     <div className="article">
       <h3 className="title">{title}</h3>
       <p className="excerpt">{excerpt7}</p>
-      <a className="link" href={post.post.link}>
+      <a href={post.link} className="link">
         Full article
       </a>
     </div>
@@ -35,3 +35,8 @@ function Article(post) {
 }
 
 export default Article;
+
+//      <p className="excerpt">{excerpt7}</p>
+//<a className="link" href={post.link}>
+//Full article
+//</a>
