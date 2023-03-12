@@ -6,8 +6,8 @@ function App() {
   return (
     <div className="App">
       <div className="header">
-        <h2>Blurtl</h2>
-        <h5>Realtime cryptocurrency news.</h5>
+        <h2>blurtl</h2>
+        <h5>realtime cryptocurrency news.</h5>
       </div>
       <div className="navigation">
         <h3>Latest</h3>
