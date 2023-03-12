@@ -20,7 +20,7 @@ function LatestArticles() {
       return;
     }
     if (thePost.id === undefined) {
-      //console.log("postId is undefined");
+      console.log("postId is undefined");
       return;
     }
     if (thePost.upvotes || thePost.downvotes >= 0) {

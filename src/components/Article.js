@@ -51,6 +51,8 @@ function Article({ post }) {
 
   const score = upvotes - downvotes;
 
+  //console.log("test");
+
   return (
     <div className="articleBox">
       <div className="article">
