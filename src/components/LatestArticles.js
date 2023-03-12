@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Article from "./Article";
 import "../Article.css";
 import {
@@ -14,46 +14,49 @@ function LatestArticles() {
   const [posts, setPosts] = useState([]);
   const [newPosts, setNewPosts] = useState([]);
 
-  async function addPost(thePost) {
-    if (posts.find((post) => post.id === thePost.id)) {
-      //console.log("already exists");
-      return;
-    }
-    if (thePost.id === undefined) {
-      console.log("postId is undefined");
-      return;
-    }
-    if (thePost.upvotes || thePost.downvotes >= 0) {
-      const docRef = await addDoc(collection(db, "posts"), {
-        id: thePost.id,
-        title: thePost.title,
-        excerpt: thePost.excerpt,
-        link: thePost.link,
-        upvotes: thePost.upvotes,
-        downvotes: thePost.downvotes,
-        docId: null,
-      });
-      const docRef2 = doc(db, `posts/${docRef.id}`);
-      await updateDoc(docRef2, { docId: docRef.id });
-      return;
-    }
-    try {
-      const docRef = await addDoc(collection(db, "posts"), {
-        id: thePost.id,
-        title: thePost.title,
-        excerpt: thePost.excerpt,
-        link: thePost.link,
-        docId: null,
-        upvotes: thePost.upvotes,
-        downvotes: thePost.downvotes,
-      });
-      const docRef2 = doc(db, `posts/${docRef.id}`);
-      await updateDoc(docRef2, { docId: docRef.id });
-      //console.log("Document written with ID: ", docRef.id);
-    } catch (e) {
-      console.error("Error adding document: ", e);
-    }
-  }
+  const addPost = useCallback(
+    async (thePost) => {
+      if (posts.find((post) => post.id === thePost.id)) {
+        //console.log("already exists");
+        return;
+      }
+      if (thePost.id === undefined) {
+        console.log("postId is undefined");
+        return;
+      }
+      if (thePost.upvotes || thePost.downvotes >= 0) {
+        const docRef = await addDoc(collection(db, "posts"), {
+          id: thePost.id,
+          title: thePost.title,
+          excerpt: thePost.excerpt,
+          link: thePost.link,
+          upvotes: thePost.upvotes,
+          downvotes: thePost.downvotes,
+          docId: null,
+        });
+        const docRef2 = doc(db, `posts/${docRef.id}`);
+        await updateDoc(docRef2, { docId: docRef.id });
+        return;
+      }
+      try {
+        const docRef = await addDoc(collection(db, "posts"), {
+          id: thePost.id,
+          title: thePost.title,
+          excerpt: thePost.excerpt,
+          link: thePost.link,
+          docId: null,
+          upvotes: thePost.upvotes,
+          downvotes: thePost.downvotes,
+        });
+        const docRef2 = doc(db, `posts/${docRef.id}`);
+        await updateDoc(docRef2, { docId: docRef.id });
+        //console.log("Document written with ID: ", docRef.id);
+      } catch (e) {
+        console.error("Error adding document: ", e);
+      }
+    },
+    [posts, db]
+  );
 
   const articleGrabber = () => {
     console.log("fetching articles");
@@ -104,7 +107,7 @@ function LatestArticles() {
         });
       }
     });
-  }, [newPosts, addPost, posts]);
+  }, [newPosts]);
 
   return (
     <div className="article-container">
