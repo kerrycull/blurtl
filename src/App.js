@@ -10,9 +10,9 @@ function App() {
         <h5>realtime cryptocurrency news.</h5>
       </div>
       <div className="navigation">
-        <h3>Latest</h3>
-        <h3>Top (coming soon)</h3>
-        <h3>Rising (coming soon)</h3>
+        <h3 className="nongreyed">Latest</h3>
+        <h3 className="greyed">Top</h3>
+        <h3 className="greyed">Rising</h3>
       </div>
       <LatestArticles />
     </div>
