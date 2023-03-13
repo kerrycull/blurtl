@@ -131,7 +131,7 @@ function LatestArticles() {
     window.addEventListener("scroll", handleScroll);
 
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [page]);
 
   return (
     <div className="article-container">
