@@ -92,5 +92,5 @@ button {
 }
 
 .link:hover {
-  border-bottom: 1px solid transparent;
+  color: #005f8b;
 }
