@@ -13,6 +13,7 @@ import { db } from "../firebase";
 function LatestArticles() {
   const [posts, setPosts] = useState([]);
   const [newPosts, setNewPosts] = useState([]);
+  const [page, setPage] = useState(1);
 
   const addPost = useCallback(
     async (thePost) => {
@@ -77,12 +78,12 @@ function LatestArticles() {
         posts.push(doc.data());
       });
       posts.sort((a, b) => b.id - a.id); // sort by id in descending order
-      setPosts(posts.slice(0, 10)); // get the 10 most recent posts
+      setPosts(posts.slice(0, page * 10)); // get the 10 most recent posts
       //console.log(posts);
     });
 
     return unsubscribe;
-  }, []);
+  }, [page]);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -108,6 +109,29 @@ function LatestArticles() {
       }
     });
   }, [newPosts, posts, addPost]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop =
+        (document.documentElement && document.documentElement.scrollTop) ||
+        document.body.scrollTop;
+      const scrollHeight =
+        (document.documentElement && document.documentElement.scrollHeight) ||
+        document.body.scrollHeight;
+      const clientHeight =
+        document.documentElement.clientHeight || window.innerHeight;
+      const scrolledToBottom =
+        Math.ceil(scrollTop + clientHeight) >= scrollHeight;
+
+      if (scrolledToBottom) {
+        setPage(page + 1);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <div className="article-container">
