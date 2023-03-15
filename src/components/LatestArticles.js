@@ -9,8 +9,10 @@ import {
   doc,
 } from "firebase/firestore";
 import { db } from "../firebase";
+import { useKeepAwake } from "@sayem314/react-native-keep-awake";
 
 function LatestArticles() {
+  useKeepAwake();
   const [posts, setPosts] = useState([]);
   const [newPosts, setNewPosts] = useState([]);
   const [page, setPage] = useState(1);
