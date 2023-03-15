@@ -27,7 +27,7 @@ function LatestArticles() {
         console.log("postId is undefined");
         return;
       }
-      if (thePost.upvotes || thePost.downvotes >= 0) {
+      if ((thePost.id && thePost.upvotes) || thePost.downvotes >= 0) {
         const docRef = await addDoc(collection(db, "posts"), {
           id: thePost.id,
           title: thePost.title,
